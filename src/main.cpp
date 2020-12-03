@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <string.h>
-#include <dotenv.h>
 
 #include "modules/BluetoothSerial.h"
 #include "modules/Utilities.h"
@@ -25,7 +24,5 @@ void setup() {
   * 
 */
 void loop() {
-  // utilities_pointer->serialPrintString(
-  //   bluetooth_serial_pointer->pairingMode()
-  // );
+  
 }

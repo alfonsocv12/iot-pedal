@@ -2,6 +2,7 @@
 #include <WiFiMulti.h>
 #include <HTTPClient.h>
 
+#include "env.h"
 #include "modules/WifiConnection.h"
 #include "modules/Utilities.h"
 
@@ -31,7 +32,7 @@ string WifiConnection::request(char* url, char* path) {
     if((wifiMulti.run() == WL_CONNECTED)) {
         Utilities util;
         HTTPClient* http = new HTTPClient();
-        http->begin(url);
+        http->begin(API);
         int httpCode = http->GET();
         string payload = handleErrors(http, httpCode);
         http->end();
