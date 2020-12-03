@@ -1,5 +1,5 @@
-#ifndef UTILITIES_H
-#define UTILITIES_h
+#ifndef WIFI_CONNECTION_H
+#define WIFI_CONNECTION_h
 #include <string>
 #include <HTTPClient.h>
 

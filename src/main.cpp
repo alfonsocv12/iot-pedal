@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "BluetoothSerial.h"
-#include "Utilities.h"
-#include "WifiConnection.h"
+#include "modules/BluetoothSerial.h"
+#include "modules/Utilities.h"
+#include "modules/WifiConnection.h"
 
 using namespace std;
 
