@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <string.h>
+#include <dotenv.h>
 
-#include "dotenv.h"
 #include "modules/BluetoothSerial.h"
 #include "modules/Utilities.h"
 #include "modules/WifiConnection.h"
