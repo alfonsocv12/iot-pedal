@@ -9,7 +9,7 @@ class Utilities {
         int constructor;
     public:
         Utilities(): constructor(1) {}
-        int ReadAnalogPort();
+        int readAnalogPort();
         void serialPrintString(string s);
 };
 

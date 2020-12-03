@@ -3,11 +3,23 @@
 
 int input_jack = A0;
 
-int Utilities::ReadAnalogPort(){
+/**
+ * readAnalogPort is the function dedicated to read the input jack
+ * values
+ * 
+ * @return readValue 
+*/
+int Utilities::readAnalogPort(){
     delay(100);
     return analogRead(input_jack);
 }
 
+/**
+ * Function dedicated to print strings on the
+ * Serial line
+ * 
+ * @param s whose values ara parse into char array to be printed
+*/
 void Utilities::serialPrintString(string s) {
     int n = s.length();
     char char_array[n+1];
