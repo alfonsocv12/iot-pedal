@@ -1,18 +1,22 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "Utilities.h"
 #include "BluetoothSerial.h"
+#include "Utilities.h"
+#include "WifiConnection.h"
 
 using namespace std;
-Utilities* utilities_pointer = new Utilities();
-BluetoothSerial* bluetooth_serial_pointer = new BluetoothSerial();
+
+BluetoothSerial bluetooth_serial;
+Utilities utilities;
+WifiConnection* wifi_connection_pointer = new WifiConnection();
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
+  wifi_connection_pointer->setupWifi();
 }
 
 /**
@@ -20,7 +24,7 @@ void setup() {
   * 
 */
 void loop() {
-  utilities_pointer->serialPrintString(
-    bluetooth_serial_pointer->pairingMode()
-  );
+  // utilities_pointer->serialPrintString(
+  //   bluetooth_serial_pointer->pairingMode()
+  // );
 }
