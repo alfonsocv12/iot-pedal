@@ -5,14 +5,14 @@
 #include "modules/Utilities.h"
 #include "modules/WiFiConnection.h"
 
-// WiFiConnection* wifi_connection;
+WiFiConnection* wifi_connection;
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
-  // wifi_connection = new WiFiConnection();
+  wifi_connection = new WiFiConnection();
 }
 
 /**
@@ -20,7 +20,6 @@ void setup() {
   * 
 */
 void loop() {
-  // Utilities utilities;
-  Bluetooth bluetooth;
+  Utilities utilities;
   delay(50);
 }
