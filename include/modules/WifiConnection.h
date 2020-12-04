@@ -18,7 +18,7 @@ class WiFiConnection {
                 Serial.flush();
                 delay(1000);
             }
-
+    
             wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
         }
         string request(char);
