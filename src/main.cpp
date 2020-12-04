@@ -3,17 +3,17 @@
 
 #include "modules/BluetoothSerial.h"
 #include "modules/Utilities.h"
-#include "api/SimpleRequest.h"
+#include "modules/WiFiConnection.h"
 
-BluetoothSerial bluetooth_serial;
-Utilities utilities;
-WiFiConnection* wifi_connection = new WiFiConnection();
+WiFiConnection* wifi_connection;
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
+  BluetoothSerial bluetooth_serial;
+  wifi_connection = new WiFiConnection();
 }
 
 /**
@@ -21,6 +21,6 @@ void setup() {
   * 
 */
 void loop() {
+  Utilities utilities;
   delay(1000);
-  utilities.serialPrintString(get(wifi_connection));
 }

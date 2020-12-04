@@ -21,7 +21,7 @@ class WiFiConnection {
 
             wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
         }
-        string request(string);
+        string request(char);
 };
 
 #endif

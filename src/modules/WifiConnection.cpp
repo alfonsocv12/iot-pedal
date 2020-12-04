@@ -12,11 +12,12 @@
  * @param path the path or route for the server
  * @return payload string
 */
-string WiFiConnection::request(string path) {
+string WiFiConnection::request(char path) {
     if((wifi_multi->run() == WL_CONNECTED)) {
         Utilities util;
         HTTPClient* http = new HTTPClient();
-        http->begin(API);
+        string url(string(API) + path);
+        http->begin(url.c_str());
         int httpCode = http->GET();
         string payload = handleErrors(http, httpCode);
         http->end();

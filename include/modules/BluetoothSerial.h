@@ -8,7 +8,9 @@ class BluetoothSerial {
     private:
         int constructor;
     public:
-        BluetoothSerial(): constructor(1) {}
+        BluetoothSerial(): {
+            
+        }
         void startConnection();
         string pairingMode();
 };
