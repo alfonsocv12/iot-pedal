@@ -3,20 +3,17 @@
 
 #include "modules/BluetoothSerial.h"
 #include "modules/Utilities.h"
-#include "modules/WifiConnection.h"
-
-using namespace std;
+#include "api/SimpleRequest.h"
 
 BluetoothSerial bluetooth_serial;
 Utilities utilities;
+WiFiConnection* wifi_connection = new WiFiConnection();
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
-  WifiConnection wifi_connection;
-  WiFiMulti* wifi_multi = wifi_connection.setupWifi();
 }
 
 /**
@@ -24,5 +21,6 @@ void setup() {
   * 
 */
 void loop() {
-  
+  delay(1000);
+  utilities.serialPrintString(get(wifi_connection));
 }

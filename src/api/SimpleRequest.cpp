@@ -1,6 +1,5 @@
 #include "api/SimpleRequest.h"
-#include "modules/WifiConnection.h"
 
-string get(){
-
+std::string get(WiFiConnection* wifi) {
+    return wifi->request("/");
 }

@@ -2,23 +2,8 @@
 #include <HTTPClient.h>
 
 #include "env.h"
-#include "modules/WifiConnection.h"
+#include "modules/WiFiConnection.h"
 #include "modules/Utilities.h"
-
-/**
- * Function dedicated to connect to wifi
-*/
-WiFiMulti* WifiConnection::setupWifi() {
-  WiFiMulti* wifi_multi = new WiFiMulti();
-  for(uint8_t t = 4; t > 0; t--) {
-        Serial.printf("[SETUP] WAIT %d...\n", t);
-        Serial.flush();
-        delay(1000);
-    }
-
-  wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
-  return wifi_multi;
-}
 
 /**
  * Request to the server returning payload or error
@@ -27,8 +12,8 @@ WiFiMulti* WifiConnection::setupWifi() {
  * @param path the path or route for the server
  * @return payload string
 */
-string WifiConnection::request(char* url, char* path) {
-    if((wifiMulti.run() == WL_CONNECTED)) {
+string WiFiConnection::request(string path) {
+    if((wifi_multi->run() == WL_CONNECTED)) {
         Utilities util;
         HTTPClient* http = new HTTPClient();
         http->begin(API);
@@ -48,7 +33,7 @@ string WifiConnection::request(char* url, char* path) {
  * @param code the response integer
  * @return payload string 
 */
-string WifiConnection::handleErrors(HTTPClient* http, int code) {
+string WiFiConnection::handleErrors(HTTPClient* http, int code) {
     if (code > 0) {
         return http->getString().c_str();
     }

@@ -5,16 +5,23 @@
 #include <WiFiMulti.h>
 
 using namespace std;
-using namespace WiFiMulti;
 
-class WifiConnection {
+class WiFiConnection {
     private:
-        int constructor;
+        WiFiMulti* wifi_multi;
         string handleErrors(HTTPClient*, int);
     public:
-        WifiConnection(): constructor(1) {}
-        WiFiMulti* setupWifi();
-        string request(char*, char*);
+        WiFiConnection(){
+            wifi_multi = new WiFiMulti();
+            for(uint8_t t = 4; t > 0; t--) {
+                Serial.printf("[SETUP] WAIT %d...\n", t);
+                Serial.flush();
+                delay(1000);
+            }
+
+            wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
+        }
+        string request(string);
 };
 
 #endif
