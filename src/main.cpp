@@ -9,14 +9,14 @@ using namespace std;
 
 BluetoothSerial bluetooth_serial;
 Utilities utilities;
-WifiConnection* wifi_connection_pointer = new WifiConnection();
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
-  wifi_connection_pointer->setupWifi();
+  WifiConnection wifi_connection;
+  WiFiMulti* wifi_multi = wifi_connection.setupWifi();
 }
 
 /**

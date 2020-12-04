@@ -1,24 +1,23 @@
 #include <WiFi.h>
-#include <WiFiMulti.h>
 #include <HTTPClient.h>
 
 #include "env.h"
 #include "modules/WifiConnection.h"
 #include "modules/Utilities.h"
 
-WiFiMulti wifiMulti;
-
 /**
  * Function dedicated to connect to wifi
 */
-void WifiConnection::setupWifi() {
+WiFiMulti* WifiConnection::setupWifi() {
+  WiFiMulti* wifi_multi = new WiFiMulti();
   for(uint8_t t = 4; t > 0; t--) {
         Serial.printf("[SETUP] WAIT %d...\n", t);
         Serial.flush();
         delay(1000);
     }
 
-  wifiMulti.addAP("Chatrol5/1", "Chihuahua123");
+  wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
+  return wifi_multi;
 }
 
 /**
