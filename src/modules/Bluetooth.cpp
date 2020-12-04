@@ -1,12 +1,24 @@
-#include "modules/BluetoothSerial.h"
+#include "modules/Bluetooth.h"
 #include <Arduino.h>
 
 /**
  * startConnection is the function dedicated to start the bluetooth
  * pairing proces
 */
-void BluetoothSerial::startConnection(){
+void Bluetooth::startConnection(){
     
+}
+
+/**
+ * Ask wifi name and password
+ * 
+ * 
+*/
+void Bluetooth::wifiNamePass(BluetoothSerial SerialBT){
+    
+    while(SerialBT.available()){
+        Serial.write(SerialBT.read());
+    }
 }
 
 /**
@@ -15,7 +27,7 @@ void BluetoothSerial::startConnection(){
  * 
  * @return pair success code
 */
-string BluetoothSerial::pairingMode(){
+string Bluetooth::pairingMode(){
     delay(100);
     return "Funciona";
 }
