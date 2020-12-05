@@ -11,17 +11,15 @@ using namespace std;
 
 class WiFiConnection {
     private:
+        int construct;
         WiFiMulti* wifi_multi;
         string handleErrors(HTTPClient*, int);
-        void serverStart();
     public:
-        WiFiConnection(){
-            serverStart();
-            // manager.setupAP();
-        }
-        // WebServer server;
+        WiFiConnection(): construct(1){}
+        void serverStart();
+        WebServer* server;
         WifiManager manager;
-        // void reciveData();
+        void reciveData();
         string request(char);
 };
 

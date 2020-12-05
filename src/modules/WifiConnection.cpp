@@ -7,20 +7,12 @@
 
 
 /**
- * Recive client data
-*/
-void reciveData(){
-    // Serial.println("request");
-}
-
-/**
  * 
 */
 void WiFiConnection::serverStart() {
-    WebServer* server = new WebServer(80);
-    server->on("/", reciveData);
+    server = new WebServer(80);
+    manager.setupAP();
     server->begin();
-    server->handleClient();
 }
 
 /**
