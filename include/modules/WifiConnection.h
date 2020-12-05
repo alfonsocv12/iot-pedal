@@ -3,6 +3,9 @@
 #include <string>
 #include <HTTPClient.h>
 #include <WiFiMulti.h>
+#include <WebServer.h>
+#include <Preferences.h>
+#include <Esp32WifiManager.h>
 
 using namespace std;
 
@@ -10,17 +13,15 @@ class WiFiConnection {
     private:
         WiFiMulti* wifi_multi;
         string handleErrors(HTTPClient*, int);
+        void serverStart();
     public:
         WiFiConnection(){
-            wifi_multi = new WiFiMulti();
-            for(uint8_t t = 4; t > 0; t--) {
-                Serial.printf("[SETUP] WAIT %d...\n", t);
-                Serial.flush();
-                delay(1000);
-            }
-    
-            wifi_multi->addAP("Chatrol5/1", "Chihuahua123");
+            serverStart();
+            // manager.setupAP();
         }
+        // WebServer server;
+        WifiManager manager;
+        // void reciveData();
         string request(char);
 };
 

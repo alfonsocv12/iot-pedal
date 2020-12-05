@@ -5,6 +5,24 @@
 #include "modules/WiFiConnection.h"
 #include "modules/Utilities.h"
 
+
+/**
+ * Recive client data
+*/
+void reciveData(){
+    // Serial.println("request");
+}
+
+/**
+ * 
+*/
+void WiFiConnection::serverStart() {
+    WebServer* server = new WebServer(80);
+    server->on("/", reciveData);
+    server->begin();
+    server->handleClient();
+}
+
 /**
  * Request to the server returning payload or error
  * 
