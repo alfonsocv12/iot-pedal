@@ -15,7 +15,11 @@ class WiFiConnection {
         WiFiMulti* wifi_multi;
         string handleErrors(HTTPClient*, int);
     public:
-        WiFiConnection(): construct(1){}
+        WiFiConnection(){
+            server = new WebServer(80);
+            manager.setupAP();
+            server->begin();
+        }
         void serverStart();
         WebServer* server;
         WifiManager manager;

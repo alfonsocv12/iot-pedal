@@ -3,7 +3,7 @@
 
 #include "modules/WiFiConnection.h"
 
-WiFiConnection* wifi_connection = new WiFiConnection();
+WiFiConnection* wifi_connection;
 
 void response();
 
@@ -12,7 +12,7 @@ void response();
 */
 void setup() {
   Serial.begin(115200);
-  wifi_connection->serverStart();
+  wifi_connection = new WiFiConnection();
   wifi_connection->server->on("/", response);
 }
 
@@ -22,16 +22,12 @@ void setup() {
   * 
 */
 void loop() {
-  wifi_connection->manager.loop();
-	if (wifi_connection->manager.getState() == Connected) {
-		// use the Wifi Stack now connected and a device is connected to the AP
-	}
+  wifi_connection->serverStart();
 }
 
 /**
  * Function that returns the response
 */
 void response(){
-  Serial.println("request");
-  wifi_connection->server->send(200, "text/plain", "ready");
+  wifi_connection->server->send(200, "text/plain", "ready prras");
 }

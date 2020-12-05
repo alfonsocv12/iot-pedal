@@ -10,9 +10,11 @@
  * 
 */
 void WiFiConnection::serverStart() {
-    server = new WebServer(80);
-    manager.setupAP();
-    server->begin();
+    server->handleClient();
+    manager.loop();
+	if (manager.getState() == Connected) {
+		// use the Wifi Stack now connected and a device is connected to the AP
+	}
 }
 
 /**
