@@ -1,57 +1,45 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-#include "env.h"
 #include "modules/WiFiConnection.h"
 #include "modules/Utilities.h"
 
 
 /**
- * Start WiFi as accespoint if needed
+ * Put wifi on AP mode
 */
 void WiFiConnection::startAP() {
-	WiFi.mode(WIFI_STA);
-	WiFi.disconnect();
-	delay(100);
-	setup();
-}
-
-/**
- * Setup AP
-*/
-void WiFiConnection::setup() {
+	WiFi.disconnect(true);
+	server = new WebServer(80);
 	WiFi.mode(WIFI_MODE_AP);
-
-	uint8_t mac[6];
-	char macStr[18] = { 0 };
-
-	esp_wifi_get_mac(WIFI_IF_STA, mac);
-	sprintf(macStr, "%02X-%02X", mac[4], mac[5]);
-	std::string defaultap =  "esp32-" + std::string(macStr);
-
-	preferences.begin("wifi", true);
-	networkPswdServer 	= getPassword(networkNameServer); //NVS key password
-	apNameServer 		= preferences.getString("apssid",					defaultap); //NVS key ssid
-	apPswdServer 		= getPassword(apNameServer, "Wumpus3742"); 
-	preferences.end();
-
-	staticRef = this;
-	connectionAttempts = 0;
-	WiFi.onEvent(WiFiEventWifiManager);
-	connectionAttempts = 1;
-	setupDone = true;
+	mac_address = WiFi.macAddress().c_str();
+	WiFi.softAP(AP_NAME, AP_PASSWORD);
+	Serial.print("Mac address: ");
+	Serial.println(mac_address.c_str());
+	Serial.println("");
+	Serial.print("ssid: ");
+	Serial.println(AP_NAME);
+	Serial.print("password: ");
+	Serial.println(AP_PASSWORD);
 }
 
 /**
  * This function is dedicated to estart de server loop for reciving the wifi and password
 */
 void WiFiConnection::serverStart() {
-    server->handleClient();
+	connected = false; 
+	server->handleClient();
+	Serial.println("creo");
 	server->on("/", std::bind(&WiFiConnection::response, this));
+	Serial.println("creo");
 	server->on("/LED", HTTP_POST, std::bind(&WiFiConnection::response, this));
+	Serial.println("creo");
 	server->onNotFound(std::bind(&WiFiConnection::notFound, this));
+	Serial.println("creo");
 	server->begin();
-    loop();
+	while(1) {
+		if(connected) break;
+	}
 }
 
 /**
@@ -94,6 +82,7 @@ std::string WiFiConnection::handleErrors(HTTPClient* http, int code) {
  * Landign of the server
 */
 void WiFiConnection::response() {
+	Serial.println("request");
     std::string ssid = server->arg("s").c_str();
     std::string password = server->arg("p").c_str();
     

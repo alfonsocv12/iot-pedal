@@ -4,8 +4,8 @@
 #include <HTTPClient.h>
 #include <WiFiMulti.h>
 #include <WebServer.h>
-#include <esp_wifi.h>
-// #include <Esp32WifiManager.h>
+
+#include "env.h"
 
 class WiFiConnection {
     private:
@@ -13,13 +13,15 @@ class WiFiConnection {
         WiFiMulti* wifi_multi;
         std::string handleErrors(HTTPClient*, int);
         void startAP();
-        void setup();
+        std::string mac_address;
+        bool connected;
     public:
         WiFiConnection() {
-            server = new WebServer(80);
             WiFi.mode(WIFI_STA);
             WiFi.begin();
+            delay(100);
             if(WiFi.status() != WL_CONNECTED) {
+                startAP();
                 serverStart();
             } else {
                 Serial.println("Connected");
@@ -31,7 +33,6 @@ class WiFiConnection {
         WebServer* server;
         void reciveData();
         std::string request(char);
-        std::string getPassword(std::string, std::string);
 };
 
 #endif
