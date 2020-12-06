@@ -4,7 +4,7 @@
 #include <HTTPClient.h>
 #include <WiFiMulti.h>
 #include <WebServer.h>
-#include <Preferences.h>
+#include <esp_wifi.h>
 // #include <Esp32WifiManager.h>
 
 class WiFiConnection {
@@ -31,6 +31,7 @@ class WiFiConnection {
         WebServer* server;
         void reciveData();
         std::string request(char);
+        std::string getPassword(std::string, std::string);
 };
 
 #endif

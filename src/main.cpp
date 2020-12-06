@@ -1,16 +1,16 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "modules/WiFiConnection.h"
+// #include "modules/WiFiConnection.h"
 
-WiFiConnection* wifi_connection;
+// WiFiConnection* wifi_connection;
 
 /**
   * Setup all the previews initial commands
 */
 void setup() {
   Serial.begin(115200);
-  wifi_connection = new WiFiConnection();
+  // wifi_connection = new WiFiConnection();
 }
 
 
@@ -19,5 +19,5 @@ void setup() {
   * 
 */
 void loop() {
-  wifi_connection->serverStart();
+  // wifi_connection->serverStart();
 }

@@ -27,10 +27,9 @@ void WiFiConnection::setup() {
 
 	esp_wifi_get_mac(WIFI_IF_STA, mac);
 	sprintf(macStr, "%02X-%02X", mac[4], mac[5]);
-	std::string defaultap =  "esp32-" + String(macStr);
+	std::string defaultap =  "esp32-" + std::string(macStr);
 
 	preferences.begin("wifi", true);
-	networkNameServer 	= preferences.getString("ssid", 					"none");    //NVS key ssid
 	networkPswdServer 	= getPassword(networkNameServer); //NVS key password
 	apNameServer 		= preferences.getString("apssid",					defaultap); //NVS key ssid
 	apPswdServer 		= getPassword(apNameServer, "Wumpus3742"); 
@@ -97,10 +96,14 @@ std::string WiFiConnection::handleErrors(HTTPClient* http, int code) {
 void WiFiConnection::response() {
     std::string ssid = server->arg("s").c_str();
     std::string password = server->arg("p").c_str();
-    manager.setPassword(ssid, password);
+    
     server->send(200, "text/plain", "ready prras");
 }
 
+
+/**
+ * Not found function for the server
+*/
 void WiFiConnection::notFound() {
     server->send(400, "text/plain", "tranquilo mate");
 }
