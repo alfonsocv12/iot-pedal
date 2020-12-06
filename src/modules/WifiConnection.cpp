@@ -7,14 +7,52 @@
 
 
 /**
- * 
+ * Start WiFi as accespoint if needed
+*/
+void WiFiConnection::startAP() {
+	WiFi.mode(WIFI_STA);
+	WiFi.disconnect();
+	delay(100);
+	setup();
+}
+
+/**
+ * Setup AP
+*/
+void WiFiConnection::setup() {
+	WiFi.mode(WIFI_MODE_AP);
+
+	uint8_t mac[6];
+	char macStr[18] = { 0 };
+
+	esp_wifi_get_mac(WIFI_IF_STA, mac);
+	sprintf(macStr, "%02X-%02X", mac[4], mac[5]);
+	std::string defaultap =  "esp32-" + String(macStr);
+
+	preferences.begin("wifi", true);
+	networkNameServer 	= preferences.getString("ssid", 					"none");    //NVS key ssid
+	networkPswdServer 	= getPassword(networkNameServer); //NVS key password
+	apNameServer 		= preferences.getString("apssid",					defaultap); //NVS key ssid
+	apPswdServer 		= getPassword(apNameServer, "Wumpus3742"); 
+	preferences.end();
+
+	staticRef = this;
+	connectionAttempts = 0;
+	WiFi.onEvent(WiFiEventWifiManager);
+	connectionAttempts = 1;
+	setupDone = true;
+}
+
+/**
+ * This function is dedicated to estart de server loop for reciving the wifi and password
 */
 void WiFiConnection::serverStart() {
     server->handleClient();
-    manager.loop();
-	if (manager.getState() == Connected) {
-		// use the Wifi Stack now connected and a device is connected to the AP
-	}
+	// server->on("/", );
+	// server->on("/wifi", HTTP_POST, std::bind(&WiFi));
+	// server->on("/", );
+	server->begin();
+    loop();
 }
 
 /**

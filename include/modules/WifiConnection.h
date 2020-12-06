@@ -5,7 +5,7 @@
 #include <WiFiMulti.h>
 #include <WebServer.h>
 #include <Preferences.h>
-#include <Esp32WifiManager.h>
+// #include <Esp32WifiManager.h>
 
 using namespace std;
 
@@ -14,15 +14,19 @@ class WiFiConnection {
         int construct;
         WiFiMulti* wifi_multi;
         string handleErrors(HTTPClient*, int);
+        void startAP();
+        void setup();
     public:
         WiFiConnection(){
             server = new WebServer(80);
-            manager.setupAP();
-            server->begin();
+            WiFi.mode(WIFI_STA);
+            WiFi.begin();
+            if(WiFi.status() != WL_CONNECTED) {
+                serverStart();
+            }
         }
         void serverStart();
         WebServer* server;
-        WifiManager manager;
         void reciveData();
         string request(char);
 };
