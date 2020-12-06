@@ -24,14 +24,14 @@ void WiFiConnection::serverStart() {
  * @param path the path or route for the server
  * @return payload string
 */
-string WiFiConnection::request(char path) {
+std::string WiFiConnection::request(char path) {
     if((wifi_multi->run() == WL_CONNECTED)) {
         Utilities util;
         HTTPClient* http = new HTTPClient();
-        string url(string(API) + path);
+        std::string url(std::string(API) + path);
         http->begin(url.c_str());
         int httpCode = http->GET();
-        string payload = handleErrors(http, httpCode);
+        std::string payload = handleErrors(http, httpCode);
         http->end();
         delete http;
         return payload;
@@ -46,9 +46,23 @@ string WiFiConnection::request(char path) {
  * @param code the response integer
  * @return payload string 
 */
-string WiFiConnection::handleErrors(HTTPClient* http, int code) {
+std::string WiFiConnection::handleErrors(HTTPClient* http, int code) {
     if (code > 0) {
         return http->getString().c_str();
     }
     return "Error on request code: "+code;
+}
+
+/**
+ * Landign of the server
+*/
+void WiFiConnection::response() {
+    std::string ssid = server->arg("s").c_str();
+    std::string password = server->arg("p").c_str();
+    manager.setPassword(ssid, password);
+    server->send(200, "text/plain", "ready prras");
+}
+
+void WiFiConnection::notFound() {
+    server->send(400, "text/plain", "tranquilo mate");
 }
