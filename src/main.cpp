@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include <string.h>
 
-#include "modules/Bluetooth.h"
-#include "modules/Utilities.h"
 #include "modules/WiFiConnection.h"
 
 WiFiConnection* wifi_connection;
@@ -15,11 +13,12 @@ void setup() {
   wifi_connection = new WiFiConnection();
 }
 
+
 /**
   * Loop function, if you want something to be done on the esp putit here
   * 
 */
 void loop() {
-  Utilities utilities;
-  delay(50);
+  Serial.println("connected");
+  delay(1000);
 }
