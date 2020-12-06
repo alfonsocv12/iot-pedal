@@ -7,28 +7,30 @@
 #include <Preferences.h>
 // #include <Esp32WifiManager.h>
 
-using namespace std;
-
 class WiFiConnection {
     private:
         int construct;
         WiFiMulti* wifi_multi;
-        string handleErrors(HTTPClient*, int);
+        std::string handleErrors(HTTPClient*, int);
         void startAP();
         void setup();
     public:
-        WiFiConnection(){
+        WiFiConnection() {
             server = new WebServer(80);
             WiFi.mode(WIFI_STA);
             WiFi.begin();
             if(WiFi.status() != WL_CONNECTED) {
                 serverStart();
+            } else {
+                Serial.println("Connected");
             }
         }
+        void notFound();
+        void response();
         void serverStart();
         WebServer* server;
         void reciveData();
-        string request(char);
+        std::string request(char);
 };
 
 #endif
