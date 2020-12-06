@@ -19,5 +19,6 @@ void setup() {
   * 
 */
 void loop() {
-  Serial.print("connected");
+  Serial.println("connected");
+  delay(1000);
 }

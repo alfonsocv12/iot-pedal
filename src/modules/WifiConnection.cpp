@@ -14,32 +14,45 @@ void WiFiConnection::startAP() {
 	WiFi.mode(WIFI_MODE_AP);
 	mac_address = WiFi.macAddress().c_str();
 	WiFi.softAP(AP_NAME, AP_PASSWORD);
-	Serial.print("Mac address: ");
-	Serial.println(mac_address.c_str());
-	Serial.println("");
-	Serial.print("ssid: ");
-	Serial.println(AP_NAME);
-	Serial.print("password: ");
-	Serial.println(AP_PASSWORD);
 }
 
 /**
  * This function is dedicated to estart de server loop for reciving the wifi and password
 */
 void WiFiConnection::serverStart() {
-	connected = false; 
-	server->handleClient();
-	Serial.println("creo");
-	server->on("/", std::bind(&WiFiConnection::response, this));
-	Serial.println("creo");
-	server->on("/LED", HTTP_POST, std::bind(&WiFiConnection::response, this));
-	Serial.println("creo");
-	server->onNotFound(std::bind(&WiFiConnection::notFound, this));
-	Serial.println("creo");
 	server->begin();
+	server->on("/", std::bind(&WiFiConnection::response, this));
+	server->on("/LED", HTTP_POST, std::bind(&WiFiConnection::response, this));
+	server->onNotFound(std::bind(&WiFiConnection::notFound, this));
 	while(1) {
 		if(connected) break;
+		if(ssid != "" && password != "") {
+			connectWifi();
+		}
+		server->handleClient();
 	}
+}
+
+/**
+ * 
+*/
+void WiFiConnection::connectWifi(){
+	Serial.println("Try connecting ...");
+	WiFi.mode(WIFI_STA);
+	WiFi.disconnect(true);
+	delay(100);
+	WiFi.begin(ssid.c_str(), password.c_str());
+	int count = 0;
+	Serial.print("Connectiong ..");
+	while(WiFi.status() != WL_CONNECTED) {
+		delay(500);
+		Serial.print("..");
+		count += 1;
+	}
+	Serial.println("");
+	Serial.print("connected time: ");
+	Serial.println(count*500);
+	connected = true;
 }
 
 /**
@@ -82,11 +95,9 @@ std::string WiFiConnection::handleErrors(HTTPClient* http, int code) {
  * Landign of the server
 */
 void WiFiConnection::response() {
-	Serial.println("request");
-    std::string ssid = server->arg("s").c_str();
-    std::string password = server->arg("p").c_str();
-    
-    server->send(200, "text/plain", "ready prras");
+    ssid = server->arg("s").c_str();
+    password = server->arg("p").c_str();
+	server->send(200, "text/plain", "ready prras");
 }
 
 

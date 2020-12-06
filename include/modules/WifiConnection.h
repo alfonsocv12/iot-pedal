@@ -14,22 +14,30 @@ class WiFiConnection {
         std::string handleErrors(HTTPClient*, int);
         void startAP();
         std::string mac_address;
-        bool connected;
+        std::string ssid;
+        std::string password;
+        bool connected = false;
+        void serverStart();
+        void connectWifi();
     public:
         WiFiConnection() {
             WiFi.mode(WIFI_STA);
             WiFi.begin();
-            delay(100);
+            delay(1000);
             if(WiFi.status() != WL_CONNECTED) {
                 startAP();
+                Serial.print("Mac address: ");
+	        Serial.println(mac_address.c_str());
+	        Serial.println("");
+	        Serial.print("ssid: ");
+	        Serial.println(AP_NAME);
+	        Serial.print("password: ");
+                Serial.println(AP_PASSWORD);
                 serverStart();
-            } else {
-                Serial.println("Connected");
             }
         }
         void notFound();
         void response();
-        void serverStart();
         WebServer* server;
         void reciveData();
         std::string request(char);
