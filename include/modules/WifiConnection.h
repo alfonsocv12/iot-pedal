@@ -18,6 +18,7 @@ class WiFiConnection {
         std::string password;
         int wait_connection(int count=1);
         bool connected = false;
+        WebServer* server;
         void serverStart();
         void connectWifi();
     public:
@@ -30,7 +31,6 @@ class WiFiConnection {
         }
         void notFound();
         void response();
-        WebServer* server;
         void reciveData();
         std::string request(char);
 };
