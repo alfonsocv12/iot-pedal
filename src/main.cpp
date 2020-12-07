@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <string.h>
+#include <WiFi.h>
 
 #include "modules/WiFiConnection.h"
 
@@ -16,7 +17,7 @@ void setup() {
 
 /**
   * Loop function, if you want something to be done on the esp putit here
-  * 
+  *
 */
 void loop() {
   Serial.println("connected");
