@@ -1,3 +1,4 @@
+modules/
 .pio
 .vscode/*
 include/env.h
