@@ -2,15 +2,12 @@
 #define WIFI_CONNECTION_h
 #include <string>
 #include <HTTPClient.h>
-#include <WiFiMulti.h>
 #include <WebServer.h>
 
 #include "env.h"
 
 class WiFiConnection {
     private:
-        int construct;
-        WiFiMulti* wifi_multi;
         std::string handleErrors(HTTPClient*, int);
         void startAP();
         std::string mac_address;
@@ -21,6 +18,9 @@ class WiFiConnection {
         WebServer* server;
         void serverStart();
         void connectWifi();
+        void notFound();
+        void credentials_recive_route();
+        void reciveData();
     public:
         WiFiConnection() {
             WiFi.mode(WIFI_STA);
@@ -29,9 +29,6 @@ class WiFiConnection {
                 startAP();
             }
         }
-        void notFound();
-        void response();
-        void reciveData();
         std::string request(char);
 };
 

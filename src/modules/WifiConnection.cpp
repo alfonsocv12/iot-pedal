@@ -6,7 +6,7 @@
 
 
 /**
- * Put wifi on AP mode
+ * Put wifi on AP mode for reciving the ssid and password
 */
 void WiFiConnection::startAP() {
 	WiFi.disconnect(true);
@@ -24,12 +24,13 @@ void WiFiConnection::startAP() {
 }
 
 /**
- * This function is dedicated to estart de server loop for reciving the wifi and password
+ * This function is dedicated to start de server loop the handleClient
+ * for reciving the wifi and password
 */
 void WiFiConnection::serverStart() {
 	server->begin();
-	server->on("/", std::bind(&WiFiConnection::response, this));
-	server->on("/LED", HTTP_POST, std::bind(&WiFiConnection::response, this));
+	server->on("/", std::bind(&WiFiConnection::credentials_recive_route, this));
+	server->on("/LED", HTTP_POST, std::bind(&WiFiConnection::credentials_recive_route, this));
 	server->onNotFound(std::bind(&WiFiConnection::notFound, this));
 	while(1) {
 		if(connected) {
@@ -41,6 +42,13 @@ void WiFiConnection::serverStart() {
 	}
 }
 
+/**
+ * Recursive function dedicated to wait for the esp to connect to the wifi
+ * 
+ * @param default 1 Don't send one
+ * @response int the function response with 0 on error and with 1 on success
+ * 
+*/
 int WiFiConnection::wait_connection(int count){
 	if(count > 4) return 0;
 	if(WiFi.status() == WL_CONNECTED) return 1;
@@ -50,7 +58,9 @@ int WiFiConnection::wait_connection(int count){
 }
 
 /**
- * This function is dedicated to try connectiong to the wifi;
+ * This function is dedicated to try connectiong to the wifi but only on the loop
+ * of serverStart do not use this function else where
+ * 
 */
 void WiFiConnection::connectWifi(){
 	Serial.println("Try connecting ...");
@@ -66,6 +76,23 @@ void WiFiConnection::connectWifi(){
 }
 
 /**
+ * Server function to recive the credentias for connection
+*/
+void WiFiConnection::credentials_recive_route() {
+	ssid = server->arg("s").c_str();
+	password = server->arg("p").c_str();
+	server->send(200, "text/plain", "recive data");
+}
+
+
+/**
+ * Not found function for the server
+*/
+void WiFiConnection::notFound() {
+	server->send(404, "application/json", "{\"error\": \"notFound\"}");
+}
+
+/**
  * Request to the server returning payload or error
  *
  * @param url thats the url of the server to request
@@ -73,7 +100,7 @@ void WiFiConnection::connectWifi(){
  * @return payload string
 */
 std::string WiFiConnection::request(char path) {
-	if((wifi_multi->run() == WL_CONNECTED)) {
+	if(WiFi.status() == WL_CONNECTED) {
 		Utilities util;
 		HTTPClient* http = new HTTPClient();
 		std::string url(std::string(API) + path);
@@ -84,7 +111,7 @@ std::string WiFiConnection::request(char path) {
 		delete http;
 		return payload;
 	}
-	return NULL;
+	return "Not connected to WiFi";
 }
 
 /**
@@ -99,21 +126,4 @@ std::string WiFiConnection::handleErrors(HTTPClient* http, int code) {
   	return http->getString().c_str();
 	}
 	return "Error on request code: "+code;
-}
-
-/**
- * Landign of the server
-*/
-void WiFiConnection::response() {
-	ssid = server->arg("s").c_str();
-	password = server->arg("p").c_str();
-	server->send(200, "text/plain", "ready prras");
-}
-
-
-/**
- * Not found function for the server
-*/
-void WiFiConnection::notFound() {
-	server->send(404, "application/json", "{\"error\": \"notFound\"}");
 }
